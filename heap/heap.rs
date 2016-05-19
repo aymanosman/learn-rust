@@ -23,7 +23,10 @@ fn main() {
 }
 
 fn run() {
-    let mut heap = BinaryHeap::from(vec![Key(1), Key(2), Key(3), Key(9), Key(10), Key(12)]);
+    // let mut heap = BinaryHeap::from(vec![Key(1), Key(2), Key(3), Key(9), Key(10), Key(12)]);
+    let v: Vec<Key> =
+        vec![1, 2, 3, 9, 10, 12].into_iter().map(Key).collect();
+    let mut heap = BinaryHeap::from(v);
     let mut num_steps = 0;
 
     loop {
@@ -72,11 +75,13 @@ fn run2() {
     h.read_line(&mut input).expect("err1");
     let ww = input.split_whitespace()
         .map(|x| { x.parse::<i32>().unwrap() });
-    // let vv = vec::from_iter(ww);
-    // println!("xx: {}", ww[0]);
-    for i in ww {
-        println!("x: {}", i);
-    }
+
+    let mut v = Vec::new();
+    v.extend(ww.into_iter());
+    println!("v: {:?}", v);
+    let num = v[0];
+    let sweetness = v[1];
+
     // for i in input.split_whitespace() {
     //     println!("i: {}", i.parse::<i32>().unwrap());
     // }
