@@ -1,4 +1,8 @@
 all:
+	rustc -O heap.rs -o bin/heap
+
+
+dev:
 	nodemon --exec \
 		'rustc heap.rs -o bin/heap && cat priv/text1_000.txt | bin/heap' -w heap.rs
 
