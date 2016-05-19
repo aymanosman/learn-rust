@@ -1,6 +1,6 @@
 all:
 	nodemon --exec \
-		'rustc heap.rs && cat text1_000.txt | ./heap' -w heap.rs
+		'rustc heap.rs -o bin/heap && cat priv/text1_000.txt | bin/heap' -w heap.rs
 
 bench:
 	cat priv/text100.txt| time bin/heap

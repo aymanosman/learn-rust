@@ -18,14 +18,17 @@ impl PartialOrd for Key {
 }
 
 fn main() {
-    let (sweetness, cookies) = run2();
+    // let (sweetness, cookies) = run2();
+    let sweetness = 7;
 
-    // let v: Vec<Key> =
-    //     vec![1, 2, 3, 9, 10, 12].into_iter().map(Key).collect();
+    let v: Vec<Key> =
+        vec![6, 7].into_iter().map(Key).collect();
 
     // TODO: make run2 return Vec Key
+    // let v: Vec<Key> =
+    //     cookies.into_iter().map(Key).collect();
     let mut heap =
-        BinaryHeap::from(cookies.into_iter().map(Key).collect::<Vec<Key>>());
+        BinaryHeap::from(v);
 
     println!("sweetness: {}", sweetness);
     run(sweetness, &mut heap);
@@ -33,11 +36,13 @@ fn main() {
 
 fn run(sweetness: i32, mut heap: &mut BinaryHeap<Key>) {
     let mut num_steps = 0;
+    let mut succeded = false;
 
     loop {
         match step(sweetness, &mut heap) {
             Ok(is_finished) => {
                 if is_finished {
+                    succeded = true;
                     break;
                 } else {
                     num_steps += 1;
@@ -47,14 +52,18 @@ fn run(sweetness: i32, mut heap: &mut BinaryHeap<Key>) {
         }
     }
 
-    println!("num_steps: {}", num_steps);
-    // println!("heap: {:?}", heap.into_vec());
+    if succeded {
+        println!("{}", num_steps);
+    } else {
+        println!("{}", -1);
+    }
+    println!("heap: {:?}", heap);
 }
 
 // TODO: return False when done?
 fn step(sweetness: i32, heap: &mut BinaryHeap<Key>) -> Result<bool,i32> {
     if let (Some(Key(a)), Some(Key(b))) = (heap.pop(), heap.pop()) {
-        if a > sweetness {
+        if a >= sweetness {
             heap.push(Key(a));
             heap.push(Key(b));
             return Ok(true);
