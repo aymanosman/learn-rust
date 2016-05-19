@@ -18,19 +18,18 @@ impl PartialOrd for Key {
 }
 
 fn main() {
-    // let (sweetness, cookies) = run2();
-    let sweetness = 7;
+    let (sweetness, cookies) = run2();
 
-    let v: Vec<Key> =
-        vec![6, 7].into_iter().map(Key).collect();
+    // let v: Vec<Key> =
+    //     vec![7].into_iter().map(Key).collect();
 
     // TODO: make run2 return Vec Key
-    // let v: Vec<Key> =
-    //     cookies.into_iter().map(Key).collect();
+    let v: Vec<Key> =
+        cookies.into_iter().map(Key).collect();
     let mut heap =
         BinaryHeap::from(v);
 
-    println!("sweetness: {}", sweetness);
+    // println!("sweetness: {}", sweetness);
     run(sweetness, &mut heap);
 }
 
@@ -57,24 +56,33 @@ fn run(sweetness: i32, mut heap: &mut BinaryHeap<Key>) {
     } else {
         println!("{}", -1);
     }
-    println!("heap: {:?}", heap);
+    // println!("heap: {:?}", heap);
 }
 
 // TODO: return False when done?
-fn step(sweetness: i32, heap: &mut BinaryHeap<Key>) -> Result<bool,i32> {
-    if let (Some(Key(a)), Some(Key(b))) = (heap.pop(), heap.pop()) {
-        if a >= sweetness {
+fn step(sweetness: i32, heap: &mut BinaryHeap<Key>) -> Result<bool,()> {
+    // println!("step heap: {:?}", heap);
+    match (heap.pop(), heap.pop()) {
+        (Some(Key(a)), Some(Key(b))) => {
+            if a >= sweetness {
+                heap.push(Key(a));
+                heap.push(Key(b));
+                return Ok(true);
+            } else {
+                let c = a+2*b;
+                heap.push(Key(c));
+                return Ok(false);
+            }
+        },
+        (Some(Key(a)), None) => {
             heap.push(Key(a));
-            heap.push(Key(b));
-            return Ok(true);
-        } else {
-            let c = a+2*b;
-            // println!("CC {:?}", c);
-            heap.push(Key(c));
-            return Ok(false);
-        }
-    } else {
-        return Err(42);
+            if a >= sweetness {
+                Ok(true)
+            } else {
+                Err(())
+            }
+        },
+        (None, _) => Err(())
     }
 }
 
